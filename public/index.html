@@ -1,0 +1,66 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Live Streaming</title>
+  <style>
+    body { margin: 1.5rem; text-align: center; }
+    .canvas-container { display: flex; justify-content: center; margin-top: 2rem; }
+    .canvas-container canvas { background-color: #b3b3b3; }
+  </style>
+</head>
+<body>
+  <h2>Live Streaming</h2>
+  <p>Resolution: <span id="videoRes"></span> |
+    FPS: <span id="videoFps"></span></p>
+  <div class="canvas-container">
+    <canvas id="stream"></canvas>
+  </div>
+  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+  <script>
+    const socket = io()
+    let framesRecvTime = []
+    let frameReceived = false
+
+    const videoResEl = document.getElementById('videoRes')
+    const videoFpsEl = document.getElementById('videoFps')
+    const streamCanvasEl = document.getElementById('stream')
+    const context = streamCanvasEl.getContext('2d')
+
+    // update FPS every 0.1 sec
+    setInterval(() => {
+      const frameLastSecond = framesRecvTime.filter((t) => Date.now()-1000 < t)
+      videoFpsEl.textContent = frameLastSecond.length
+      // prevent array to overload
+      if (framesRecvTime.length > 250) {
+        framesRecvTime = framesRecvTime.slice(200)
+      }
+    }, 100)
+
+    socket.on('connect', () => {
+      console.log('connected')
+    })
+
+    socket.on('frame', (base64frame) => {
+      // console.log('frame received')
+
+      const imageObj = new Image()
+      imageObj.src = 'data:image/jpeg;base64,' + base64frame
+      
+      imageObj.onload = () => {
+        if (!frameReceived) {
+          const { width, height } = imageObj
+          streamCanvasEl.width = width
+          streamCanvasEl.height = height
+          context.width = width
+          context.height = height
+          videoResEl.textContent = `${width}x${height}`
+        }
+
+        context.drawImage(imageObj, 0, 0, imageObj.width, imageObj.height)
+        framesRecvTime.push(Date.now())
+      }
+    })
+  </script>
+</body>
+</html>

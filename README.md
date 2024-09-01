@@ -1,11 +1,13 @@
 # raspi-camera-stream
 
+Stream your Raspberry Pi camera over the network and view it within your local browser in "realtime" (if your WiFi's good enough).
+
 ### How to use
 
 1. Run this following command on Raspberry Pi
 ```sh
 libcamera-vid -t 0 --inline --listen -o tcp://0.0.0.0:45000 --codec mjpeg
-# alternative for debian bookworm or later
+# alternative command for debian bookworm or later
 rpicam-vid -t 0 --inline --listen -o tcp://0.0.0.0:45000 --codec mjpeg
 ```
 
@@ -20,9 +22,9 @@ npm install
 ```sh
 node index.js <pi-ip-addr>
 ```
-Replace \<pi-ip-addr\> using your Raspi IP address, like 192.168.10.123
+Replace `<pi-ip-addr>` using your Raspi IP address, like 192.168.10.123
 
-4. Open [localhost:5050]()
+4. Open [localhost:5050](http://localhost:5050)
 
 ### Bonus
 

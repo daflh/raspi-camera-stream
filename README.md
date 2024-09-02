@@ -7,8 +7,10 @@ Stream your Raspberry Pi camera over the network and view it within your local b
 1. Run this following command on Raspberry Pi
 ```sh
 libcamera-vid -t 0 --inline --listen -o tcp://0.0.0.0:45000 --codec mjpeg
-# alternative command for debian bookworm or later
+# raspi OS based on debian bookworm or later
 rpicam-vid -t 0 --inline --listen -o tcp://0.0.0.0:45000 --codec mjpeg
+# raspi OS based on debian buster or earlier
+raspivid -t 0 -n -l -o tcp://0.0.0.0:45000 -cd MJPEG
 ```
 
 2. Clone this repo in your local computer, or you can also clone and run it inside Raspi, but it's not recommended

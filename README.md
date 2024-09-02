@@ -4,14 +4,16 @@ Stream your Raspberry Pi camera over the network and view it within your local b
 
 ### How to use
 
-1. Run this following command on Raspberry Pi
+1. Run the following command on Raspberry Pi
 ```sh
-libcamera-vid -t 0 --inline --listen -o tcp://0.0.0.0:45000 --codec mjpeg
-# raspi OS based on debian bookworm or later
+# a. Raspi OS based on Debian Bookworm or later
 rpicam-vid -t 0 --inline --listen -o tcp://0.0.0.0:45000 --codec mjpeg
-# raspi OS based on debian buster or earlier
+# b. Raspi OS based on Debian Bullseye
+libcamera-vid -t 0 --inline --listen -o tcp://0.0.0.0:45000 --codec mjpeg
+# c. Raspi OS based on Debian Buster or earlier
 raspivid -t 0 -n -l -o tcp://0.0.0.0:45000 -cd MJPEG
 ```
+You can also test the program using your local computer webcam by running the `opencv-mjpeg-server.py` script.
 
 2. Clone this repo in your local computer, or you can also clone and run it inside Raspi, but it's not recommended
 ```sh
@@ -24,7 +26,7 @@ npm install
 ```sh
 node index.js <pi-ip-addr>
 ```
-Replace `<pi-ip-addr>` using your Raspi IP address, like 192.168.10.123
+Replace `<pi-ip-addr>` using your Raspi IP address
 
 4. Open [localhost:5050](http://localhost:5050)
 
